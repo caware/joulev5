@@ -1,0 +1,8 @@
+/* Javascript formatters */
+
+var zero = d3.format("04d");
+
+function twoDigits (thing){
+    if (thing < 10) return "0"+thing.toString();
+    return thing.toString();
+}

@@ -1,0 +1,263 @@
+<html>
+	<head>
+		<title>Joule Visualisation Tree Builder</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="css/slick.grid.css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="css/slick-default-theme.css" media="screen" charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="css/index.css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.css" media="screen" charset="utf-8"/>
+	</head>
+	<body style="background-color:white;">
+		<header>  
+		  <div class="navbar navbar-inverse navbar-static-top">
+			  <div class="container">
+				  <a class="navbar-brand" href="/">Joule @ CL</a>
+				  <ul class="nav navbar-nav navbar-right">
+				    <li><a href="#help" id="HelpHead" >Help</a></li>
+				    <li><a href="#about">About</a></li>
+				    <li class="dropdown">
+				      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Feedback<b class="caret"></b></a>
+				      <ul class="dropdown-menu">
+					<li><a href="mailto:iml1@cl.cam.ac.uk?subject=Joule Feedback">Email</a></li>
+					<li><a href="https://github.com/caware/c-vis/issues" target="_blank">GitHub Bug Report</a></li>
+				      </ul>
+				    </li>
+				    <li><a href="http://www.cl.cam.ac.uk/research/srg/netos/c-aware/index.html" target="_blank">C-Aware</a></li>
+				  </ul>
+			  </div>
+		  </div>
+		</header>
+
+
+<!--Configuration Modal -->		
+		<div class="modal fade" id="configModal" tabindex="-1" role="dialog" aria-labelledby="configModalLabel">
+  			<div class="modal-dialog" role="document">
+    			<div class="modal-content">
+      				<div class="modal-header">
+        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        				<h4 class="modal-title" id="configModalLabel">Visualisation Configuration</h4>
+      				</div>
+      				<div class="modal-body">
+        				<form>
+          					<div class="form-group">
+            					<label for="maxNumberPlots" class="control-label" title="Maximum number of sensor plots Joule can show on a line chart.">maxNumberPlots:</label>
+            					<input type="text" class="form-control" id="maxNumberPlots">
+          					</div>
+          					<div class="form-group">
+            					<label for="defaultChart" class="control-label" title="Default chart type to be shown on startup [line, sankey, treeMap]">defaultChart:</label>
+            					<input class="form-control" id="defaultChart"></input>
+          					</div>
+          					<div class="form-group">
+            					<label for="segmentation" class="control-label" title="How meter info is segmented">Segmentation:</label>
+            					<input class="form-control" id="segmentation"></input>
+          					</div>
+          					<div class="form-group">
+            					<label for="autoFilter" class="control-label" title="Object to specifiy max power values before auto discarding data outside limits.">autoFilter</label>
+            					<div class="form-group">
+            						<label for="maxY" class="control-label" style="font-size:11px !important">maxY:</label>
+            						<input class="form-control" id="maxY" ></input>
+            						<label for="minY" class="control-label" style="font-size:11px !important">minY:</label>
+            						<input class="form-control" id="minY" ></input>
+            					</div>
+          					</div>
+          					<div class="form-group">
+            					<label for="zeroDate" class="control-label" title="The initial date at which data becomes available">zeroDate:</label>
+            					<input class="form-control mydate" id="zeroDate" ></input>
+          					</div>
+          					<div class="form-group">
+            					<label for="zoomSize" class="control-label" title="Width of the zoomed section.">zoomSize</label>
+            					<div class="form-group">
+            						<label for="zoomX" class="control-label" style="font-size:11px !important">zoomX:</label>
+            						<input class="form-control" id="zoomX"></input>
+            						<label for="zoomDX" class="control-label" style="font-size:11px !important">zoomDX:</label>
+            						<input class="form-control" id="zoomDX"></input>
+            					</div>
+          					</div>
+          					<div class="form-group">
+          						<div class ="row" style="margin-left: 0px;">
+          							<label for="treeUrl tfile" class="control-label" title="URL of the JSON file that defines tree to use.">treeUrl:</label>
+          						</div>
+          						<div class="row">
+          							<div class="col-xs-6">
+            							<input class="form-control" id="treeUrl"></input>
+            						</div>
+            						<div class="col-xs-6">
+            							<input type="file" id="tfile">
+            						</div>
+            					</div>	
+          					</div>
+          					<div class="form-group">
+            					<label for="sensorRootUrl" class="control-label" title="URL of the root of the dir structure containing the sensor data.">sensorRootUrl:</label>
+            					<input class="form-control" id="sensorRootUrl" value="http://www.cl.cam.ac.uk/meters/elec/published"></input>
+          					</div>
+          					<div class="form-group">
+            					<label for="carbonRootUrl" class="control-label" title="URL prefix of the carbon data.">carbonRootUrl:</label>
+            					<input class="form-control" id="carbonRootUrl" value="http://www.cl.cam.ac.uk/meters/carbon/CarbonInt"></input>
+          					</div>
+
+        				</form>
+      				</div>
+      				<div class="modal-footer">
+        				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        				<button type="button" id="FinishConfig" class="btn btn-primary">Save</button>
+      				</div>
+    			</div>
+  			</div>
+		</div>
+
+<!-- Help Modal -->		
+		<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="helpModalLabel">Help</h4>
+		      </div>
+		      <div class="modal-body">
+			<h2>Info</h2>
+			<ul>
+			  <li>'functionTree' is the tree that defines your tree structure</li>
+			  <li>'plotLines' defines the lines that will be showed in the sankey chart</li>
+			  <li>Array1 contains the individual meters</li>
+			</ul>
+			<h2>Tips on Use</h2>
+			<ul>
+			  <li>Start from the lowest level in the tree</li>
+			  <li>'Finish Level' will put the newly formed groups into a new array in the arrays container</li>
+			  <li>'Finish Tree' puts the draggable on page <strong>2</strong> into 'functionTree' as the final tree structure</li>
+			  <li>Therefore, make sure that the desired tree structure draggable ends up on page <strong>2</strong>. This can be done by creating the tree first before the plotlines or deleting the plotlines draggables when you are done creating them (as they are appended to the plotLines object when 'Done' is clicked).</li>
+			  <li>Multiple draggables may be selected by clicking on each draggable once so that its border turns red</li>
+			  <li>Double clicking on a draggable deletes it completely</li>
+			</ul>
+			  
+		      </div>
+		      <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<div id="ArrayContainer">
+			<div class="row" >
+				<div class="col-xs-6" style="position:relative; "  >
+					<h2>Meters Array</h2>
+				</div>
+				<div class="col-xs-6" style="position:relative; margin-top:25px;">
+					<div class="input-group input-group-sm">
+      					<input type="text" class="form-control" placeholder="Search for..." >
+      					<span class="input-group-btn">
+        					<button id="Go" class="btn btn-default btn-sm" type="button" >Go!</button>
+      					</span>
+    				</div>
+  				</div>
+  			</div>
+			<div id="Array1" class="well well-sm array active-array">
+				<div id="Intel Lab Lighting Second" class="drag" ><p>S-m1</p></div>
+				<div id="Intel Lab Sockets Second" class="drag" ><p>S-m2</p></div>
+				<div id="FW29 Sockets and Power" class="drag" ><p>S-m3</p></div>
+				<div id="Kitchen Power" class="drag" ><p>S-m4</p></div>
+				<div id="S-m5" class="drag" ><p>S-m5</p></div>
+				<div id="South Sockets Ground" class="drag" ><p>S-m6</p></div>
+				<div id="South Lighting Ground" class="drag" ><p>S-m7</p></div>
+				<div id="South Sockets First" class="drag" ><p>S-m8</p></div>
+				<div id="South Lighting First" class="drag" ><p>S-m9</p></div>
+				<div id="South Sockets Second" class="drag" ><p>S-m10</p></div>
+				<div id="South Lighting Second" class="drag" ><p>S-m11</p></div>
+				<div id="Central Sockets Second" class="drag" ><p>S-m12</p></div>
+				<div id="Central Lighting Second" class="drag" ><p>S-m13</p></div>
+				<div id="Central Sockets First" class="drag" ><p>S-m14</p></div>
+				<div id="Central Lighting First" class="drag" ><p>S-m15</p></div>
+				<div id="Central Sockets Ground" class="drag" ><p>S-m16</p></div>
+				<div id="Central Lighting Ground" class="drag" ><p>S-m17</p></div>
+				<div id="Non UPS" class="drag" ><p>S-m18</p></div>
+				<div id="A/C Main Machine Room" class="drag" ><p>S-m19</p></div>
+				<div id="External Lighting" class="drag" ><p>S-m20</p></div>
+				<div id="North Sockets Ground" class="drag" ><p>S-m21</p></div>
+				<div id="North Lighting Ground" class="drag" ><p>S-m22</p></div>
+				<div id="North Lighting First" class="drag" ><p>S-m23</p></div>
+				<div id="North Sockets First" class="drag" ><p>S-m24</p></div>
+				<div id="North Sockets Second" class="drag" ><p>S-m26</p></div>
+				<div id="SE18Total" class="drag" ><p>S-m27</p></div>
+				<div id="West Lighting Second" class="drag" ><p>S-m28</p></div>
+				<div id="West Sockets Second" class="drag" ><p>S-m29</p></div>
+				<div id="West Lighting First" class="drag" ><p>S-m30</p></div>
+				<div id="West Sockets First" class="drag" ><p>S-m31</p></div>
+				<div id="Lecture Theatres Sockets Ground" class="drag" ><p>S-m32</p></div>
+				<div id="Lecture Theatres Lighting Ground" class="drag" ><p>S-m33</p></div>
+				<div id="West Lighting Ground" class="drag" ><p>S-m34</p></div>
+				<div id="West Sockets Ground" class="drag" ><p>S-m35</p></div>
+				<div id="Building (1)" class="drag" ><p>S-m36</p></div>
+				<div id="GW32 Plant" class="drag" ><p>S-m37</p></div>
+				<div id="GW16" class="drag" ><p>S-m38</p></div>
+				<div id="Lifts" class="drag" ><p>S-m39</p></div>
+				<div id="Emergency Lighting" class="drag" ><p>S-m40</p></div>
+				<div id="A/C SE18" class="drag" ><p>S-m41</p></div>
+				<div id="North Lighting Second" class="drag" ><p>S-m42</p></div>
+				<div id="Condensor" class="drag" ><p>S-m43</p></div>
+				<div id="Chiller" class="drag" ><p>S-m44</p></div>
+				<div id="Fire and Security" class="drag" ><p>S-m45</p></div>
+				<div id="SE22" class="drag" ><p>S-m46</p></div>
+				<div id="GN19" class="drag" ><p>S-m47</p></div>
+				<div id="UPS" class="drag" ><p>S-m48</p></div>
+				<div id="PABX Room" class="drag" ><p>S-m49</p></div>
+				<div id="SE02" class="drag" ><p>S-m50</p></div>
+				<div id="SC17" class="drag" ><p>S-m51</p></div>
+				<div id="SW00 Air Con" class="drag" ><p>S-m52</p></div>
+				<div id="UCS" class="drag" ><p>S-m128</p></div>
+				<div id="Building (2)" class="drag" ><p>S-m257</p></div>
+				<div id="AddDrag" ><span class="glyphicon glyphicon-plus"></span></div>
+			</div>
+
+			
+		</div>
+
+		<div id="TreeBuildContainer">
+			<div id="TreeBuildHeader">
+				<button type="button" class="btn btn-default btn-sm" id="ConfigBtn" data-toggle="modal" data-target="#configModal" data-whatever="">Create Config File</button>
+				<div class="btn-group" role="group" aria-label="...">
+  					<button type="button" id="plotLines" class="btn btn-default btn-sm">plotLines</button>
+  					<button type="button" id="functionTree" class="btn btn-default btn-sm">functionTree</button>
+				</div>
+				<button type="button" id="FinishTree" class="btn btn-default btn-sm">Finish Tree</button>
+				<button type="button" id="FinishLevel" class="btn btn-default btn-sm">Finish Level</button>
+				<button type="button" id="RemoveParent" class="btn btn-default btn-sm">Remove Parent</button>
+				<button type="button" id="AddParent" class="btn btn-default btn-sm">Add Parent</button>
+			</div>
+			
+			<div class="well well-sm" id="TreeBuildBody">
+			</div>
+		</div>
+
+		<div id="ArrayFooter">
+			<nav>
+  				<ul class="pagination pagination-sm">
+    				<li>
+      					<a href="#!" aria-label="Previous" class="arrow-prev">
+        					<span aria-hidden="true">&laquo;</span>
+      					</a>
+    				</li>
+    				<li><a href="#!" class="num active-num">1</a></li>
+    				<li>
+      					<a href="#!" aria-label="Next" class="arrow-next">
+        					<span aria-hidden="true">&raquo;</span>
+      					</a>
+    				</li>
+  				</ul>
+			</nav>
+		</div>
+		
+		<script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+		<!--<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>-->
+		<!--<script type="text/javascript" src="jquery.event.drag-2.2/jquery.event.drag-2.2.js"></script>-->
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/jquery.event.drop-2.2.js"></script>
+		<!--<script type="text/javascript" src="jquery.event.drag-2.2/jquery.event.drag.live-2.2.js"></script>-->
+		<script type="text/javascript" src="js/FileSaver.js"></script>
+		<script type="text/javascript" src="js/moment.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>
+	</body>
+</html>

@@ -1,0 +1,238 @@
+/*Layout Containers*/
+
+#ArrayContainer{
+	float:left;
+	width:400px;
+	display:inline-block;
+}
+
+#TreeBuildContainer{
+	float:right;
+	width:849.954px;
+	display:inline-block;
+	position:relative;
+	
+}
+
+#ArrayFooter{
+	float:left;
+	clear:both;
+	width:400px;
+	height: 100px;
+	margin-top:-50px;
+}
+
+
+/*TreeBuilder*/
+
+#TreeBuildHeader{
+	display:inline-block;
+	margin-top:13.5px;
+	position:relative;
+	float:right;
+	
+}
+
+#TreeBuildBody{
+	position:relative;
+	float:right;
+	width:849.6px;
+	height:670;
+	display:inline;
+	margin-right:0px;
+	margin-top:9.5px;
+	overflow:scroll;
+
+}
+
+/*Array*/
+
+.array{
+	border-radius:20px;
+	border:0px solid #000000;
+	background-color:#eeeeee;
+	width:400;
+	height:670;
+	margin-left:0px;
+	position:absolute;
+	display:none;
+}
+
+.active-array{
+	display:block;
+}
+
+h2{
+	margin-left:0px;
+	border-radius:8px;
+	width:190px;
+	text-align:left;
+	display:block;
+	color:#222222 !important;
+	border: 1px solid grey transparent;
+}
+
+
+/*Drag and Drop*/
+
+div.drag{
+	position:relative; 
+	margin-top:5px;
+	margin-bottom:5px;
+	display:inline-block;
+	width:50px;
+	height:50px;
+	background-color:#337ab7;
+	border-radius:10px;
+	border: 1px solid black;
+	text-align:center;
+	cursor:move;
+	left:0;
+}
+
+div.drag p{
+	position:relative;
+	margin:15px 2px 2px 2px;
+	font-size:10px;
+	color:#ffffff;
+}
+
+div.drag span{
+	background-color:black;
+	margin-top: 2px;
+	color: white;
+	font-size: 10px;
+	font-family: "Calibri";
+	padding: 3px 3px 3px 3px;
+	border-radius: 10px;
+	border: 1px white;
+	clear:both;
+	position:absolute;
+	z-index: auto;
+}
+
+.selectedDrag{
+	border:2px solid #dd0000 !important;
+}
+
+#dragcontainer{
+	background-color: transparent;
+	display:inline;
+	width:74.5%;
+}
+
+#AddDrag{
+	position:relative; 
+	margin-top:5px;
+	margin-bottom:5px;
+	display:inline-block;
+	width:50px;
+	height:50px;
+	background-color:transparent;
+	border-radius:10px;
+	border: 1px dashed black;
+	text-align:center;
+	cursor:pointer;
+	left:0;
+}
+
+#AddDrag span{
+	position:relative;
+	margin-top:12px;
+}
+
+div.drop{
+	position:relative;
+	border-radius:2px;
+	margin-left: 50px;
+	margin-right:50px;
+	display:inline-block;
+	border:1px solid #ccc;
+	background-color:white;
+	margin: 0 0 0 0;
+	width:276.531133333333333px;
+	height:223.3333333333333px;
+	text-align:center;
+	z-index:0;
+	overflow: scroll;
+}
+
+.stylecheck{
+	margin-top:5.7px !important;
+	width:100px;
+	margin-left:20px;
+}
+
+.stylecheck label{
+	font-size:14px;
+} 
+
+
+/*Buttons*/
+
+button{
+	outline:0 none !important;
+}
+
+button.margin-custom{
+	float:right;
+	clear:left;
+	margin-bottom:0px;
+	margin-top:5px;
+	margin-right:3px;
+}
+
+button.btn p{
+	margin-bottom:-2px;
+}
+
+button#AddParent, button#RemoveParent{
+	position:relative;
+	float:right; 
+	text-align:center;
+	margin-top:10px;
+	margin-right:20px;  
+}
+
+button#FinishTree, button#FinishLevel, div.btn-group, button#ConfigBtn{
+	position:relative;
+	float:left;
+	text-align:center;
+	margin-top:10px;
+	margin-right:20px;
+}
+
+ul.pagination{
+	margin-top:1px;
+
+}
+
+#ArrayFooter ul a{
+	margin-top:-20px;
+}
+
+a.arrow-next, a.arrow-prev{
+	margin-top:-20px !important;
+	background-color:#f5f5f5 !important;
+}
+
+/*Slider numbers*/
+
+li a.num{
+	background-color:#f5f5f5 !important
+
+}
+li a.active-num{
+	background-color:#ddd !important;
+}
+
+input.mydate{
+	width: 200px;
+
+}
+
+
+
+
+
+

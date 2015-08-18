@@ -1,0 +1,44 @@
+# !/bin/bash
+PUBLISHED=/anfs/www/html/meters/elec/published
+
+echo $PUBLISHED
+
+echo "{ 
+     \"item-metadata\":[
+             {
+                  \"rel\":\"urn:X-tsbiot:rels:isContentType\",
+                  \"val\":\"application/vnd.tsbiot.catalogue+json\"
+             },
+             {
+                  \"rel\":\"urn:X-tsbiot:rels:hasDescription:en\",
+                  \"val\":\"Sensor Data\"
+             },
+             {
+                  \"rel\":\"urn:X-tsbiot:rels:supportsSearch\",
+                  \"val\":\"urn:X-tsbiot:search:simple\"
+             }
+        ],
+        \"items\":[
+             " > text.json 
+
+
+for meter in $PUBLISHED/*; do
+ #   echo $meter
+    echo "{
+              \"href\":\"http://www.cl.cam.ac.uk/meters/elec/published/$meter\",
+              \"i-object-metadata\":[
+                   {
+                       \"rel\":\"urn:X-tsbiot:rels:isContentType\",
+                       \"val\":\"application/json\"
+                   },
+                   {
+                       \"rel\":\"urn:X-tsbiot:hasDescription:en\",
+                       \"val\":\"$meter\"
+                   }
+                ]
+          },
+          " >> text.json
+done
+
+
+    

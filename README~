@@ -1,0 +1,19 @@
+V5.00 Documentation
+
+catscript.bash - Bash script file which reads the http://www.cl.cam.ac.uk/meters/elec/published folder to get the published data file names that have the format "S-m*-YYYY-MM.json"and creates a Hyper/Cat metadata object for each file. Each metadata object is appended to the items array in the Hyper/Cat catalogue object. The catalogue object file is called "cat".
+
+Joule Vis Tree Builder - Contains the source files for the tree builder tool.
+
+indexon2.html - Updated index file. The main alteration is a modal has been added which pops up before the page has fully loaded which prompts the user to upload a configuration file which has a URL to the tree file. N.B. The config file is created in the tree build tool.
+
+js2 - Altered version in which the public variables in cvis.data.js and cvis.chart.js are turned into private variables and are accessed and set using getters and setters.
+
+node-hypercat-master - A library for fetching, pushing and manipulating HyperCats. Look at README inside the folder for extra info.
+ 
+
+Suggested changes to make Joule utilise the Hyper/Cat specification
+
+-The goal is to have Joule search through the catalogue object to find the desired URL for certain published data by searching through the "rel" and "val" metadata properties of the resource.
+- The important functions that affect this are in cvis.data. They are: fetchSeg, loadMeterData, getSuffixes, updateSuffixes.
+- Rather than generating suffixes, the URLs of data files that fall in between the month and year limits of the view range can be searched for from the catalogue object. This allows the four functions to be merged into a potentially smaller one.
+ 
