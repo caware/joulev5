@@ -26,7 +26,7 @@ var utils = {
 	makeCopyReadings : function (data) { // Duplicate a bi-dimensional array
 		var res = [];
 		for (var i=0;i<data.length; i++){
-			res.push ([data[i][0], data[i][1]]);
+		    res.push ([data[i][0], data[i][1]]);
 		}
 		return res;
 	},
@@ -37,18 +37,15 @@ var utils = {
 
 		if (next === null) return;
 
-		if (next.step != accum.step) {
-			console.warn("Attempt to create a virtual meter which combines timeseries with different steps.");
-			return;
-		}
-
 		if ((next.start < accum.start) || (next.readings.length != accum.readings.length)) {
-			console.warn("A virtual meter is being created which combines unmatched timeseries.");
+			console.warn("A virtual meter is being created which combines unmatched timeseries. foo");
 		}
 
 		// There are some other horrible possibilities which we will ignore for now
 
-		offset = (next.start - accum.start) / accum.step;
+		offset = Math.ceil((next.start - accum.start) / accum.step);
+	        // Avoid problems with next starting halfway through an accum step
+	        //This gives required response for negative offset too.
 
 		if (offset < 0){
 			mystart = 0;
@@ -57,10 +54,43 @@ var utils = {
 			mystart = offset;
 		}
 
-		for (var i=mystart; i<accum.readings.length; i++){
-			if ((i - offset) >= next.readings.length) break;
-			accum.readings[i] += sign * next.readings[i-offset];
+		if (next.step != accum.step) {
+		    console.warn("Attempt to create a virtual meter which combines timeseries with different steps.");
+		    console.warn(accum.step);
+		    console.warn(next.step);		    
+		    var accumNextRatio = accum.step / next.step;
+
+		    if (accumNextRatio > 1) { //There are more than one next steps for each accum step, so we average. Assuming the timesteps neatly divide each other
+			var nextOffset = (offset*accum.step - (next.start - accum.start)) / next.step;
+			console.warn(accumNextRatio);
+			var tmpPower = 0;
+			for(var i=mystart; i < accum.readings.length; i++){
+			    for(var j=(i-offset+nextOffset)*accumNextRatio; j < (i-offset+1+nextOffset)*accumNextRatio; j++){
+				if (j >= next.readings.length) break;
+				tmpPower += next.readings[j];
+			    }
+			    tmpPower = tmpPower / accumNextRatio;
+			    accum.readings[i] += tmpPower * sign;
+			    tmpPower = 0;
+			}
+			return;
+		    }
+
+		    else{ //More than one accum step for each next step. We do linear interpolation
+			for(var i=mystart; i< accum.readings.length; i++){
+			    var j0 = Math.floor((i-offset)*accumNextRatio);
+			    var j1 = Math.floor((i-offset)*accumNextRatio+1);
+			    if (j1 >= next.readings.length) break;
+			    accum.readings[i] = sign * next.readings[j0] + (j1 - (i - offset))*(next.readings[j1] - next.readings[j0]);
+			}
+		    }
 		}
+	    else{
+		for (var i=mystart; i<accum.readings.length; i++){
+		    if ((i - offset) >= next.readings.length) break;
+		    accum.readings[i] += sign * next.readings[i-offset];
+		}
+	    }
 	},
 
 	altDataReadings : function (prim, sec) { // Produces a time series with values preferentially from prim, else from sec
