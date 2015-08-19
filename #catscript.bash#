@@ -1,5 +1,5 @@
 # !/bin/bash
-#This is a comment
+#This is a comment. This is another comment
 PUBLISHED=/anfs/www/html/meters/elec/published
 
 echo $PUBLISHED
